@@ -153,22 +153,46 @@
   </form>
 
   <script>
-    document.getElementById('policeDataForm').addEventListener('submit', function(e) {
+   function downloadCSV(filename, data) {
+      const blob = new Blob([data], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      
+      if (navigator.msSaveBlob) { // IE 10+
+      navigator.msSaveBlob(blob, filename);
+      } else {
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      }
+   }
+
+   function convertToCSV(obj) {
+      const headers = Object.keys(obj).join(',') + '\n';
+      const values = Object.values(obj).map(v => `"${(v || '').replace(/"/g, '""')}"`).join(',') + '\n';
+      return headers + values;
+   }
+
+   document.getElementById('policeDataForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const formData = new FormData(e.target);
       const entry = {};
 
       for (let [key, value] of formData.entries()) {
-        if (entry[key]) {
-          entry[key] += `, ${value}`;  // handles multi-select
-        } else {
-          entry[key] = value;
-        }
+      if (entry[key]) {
+         entry[key] += `, ${value}`;
+      } else {
+         entry[key] = value;
+      }
       }
 
-      console.log("Form Entry:", entry);
-      // Next: send this to backend or save as CSV client-side
-    });
+      const csv = convertToCSV(entry);
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      downloadCSV(`police_event_${timestamp}.csv`, csv);
+   });
+
+
   </script>
 </body>
 </html>
