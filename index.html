@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Police Data Entry</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    label {
+      display: flex;
+      flex-direction: column;
+      font-weight: bold;
+    }
+    input, select {
+      padding: 5px;
+      font-size: 14px;
+    }
+    textarea {
+      grid-column: span 2;
+      font-size: 14px;
+    }
+    button {
+      grid-column: span 2;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h2>Bangladesh Police Event Entry</h2>
+  <form id="policeDataForm">
+    <label>Date
+      <input type="date" name="Date" required>
+    </label>
+
+    <label>Time Occurred
+      <input type="time" name="Time Occurred" required>
+    </label>
+
+    <label>Time Responded
+      <input type="time" name="Time Responded">
+    </label>
+
+    <label>Unit Assigned
+      <select name="Unit Assigned">
+        <option value="">Select</option>
+        <option value="Unit A">Unit A</option>
+        <option value="Unit B">Unit B</option>
+        <option value="Unit C">Unit C</option>
+      </select>
+    </label>
+
+    <label>Officer Assigned
+      <input type="text" name="Officer Assigned">
+    </label>
+
+    <label>Officer Investigating
+      <input type="text" name="Officer Investigating">
+    </label>
+
+    <label>Event
+      <select name="Event">
+        <option value="">Select</option>
+        <option>Robbery</option>
+        <option>Assault</option>
+        <option>Drug Possession</option>
+        <option>Burglary</option>
+        <option>Murder</option>
+        <option>Other</option>
+      </select>
+    </label>
+
+    <label>Location Coordinates
+      <input type="text" name="Location Coordinates" placeholder="e.g., 23.8103, 90.4125">
+    </label>
+
+    <label>Camp
+      <input type="text" name="Camp">
+    </label>
+
+    <label>Block
+      <input type="text" name="Block">
+    </label>
+
+    <label>Sub-block
+      <input type="text" name="Sub-block">
+    </label>
+
+    <label>Complainant
+      <input type="text" name="Complainant">
+    </label>
+
+    <label>Victim Name
+      <input type="text" name="Victim Name">
+    </label>
+
+    <label>Victim Gender
+      <select name="Victim Gender">
+        <option value="">Select</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+    </label>
+
+    <label>Suspect Name
+      <input type="text" name="Suspect Name">
+    </label>
+
+    <label>Suspect Gender
+      <select name="Suspect Gender">
+        <option value="">Select</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+    </label>
+
+    <label>Gang Affiliation
+      <input type="text" name="Gang Affiliation">
+    </label>
+
+    <label>Weapons Used
+      <select name="Weapons Used" multiple size="3">
+        <option>None</option>
+        <option>Knife</option>
+        <option>Firearm</option>
+        <option>Blunt Object</option>
+        <option>Explosive</option>
+        <option>Other</option>
+      </select>
+    </label>
+
+    <label>Link to Photos
+      <input type="url" name="Link to Photos" placeholder="https://example.com/photo.jpg">
+    </label>
+
+    <button type="submit">Submit Entry</button>
+  </form>
+
+  <script>
+    document.getElementById('policeDataForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const entry = {};
+
+      for (let [key, value] of formData.entries()) {
+        if (entry[key]) {
+          entry[key] += `, ${value}`;  // handles multi-select
+        } else {
+          entry[key] = value;
+        }
+      }
+
+      console.log("Form Entry:", entry);
+      // Next: send this to backend or save as CSV client-side
+    });
+  </script>
+</body>
+</html>
